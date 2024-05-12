@@ -1,0 +1,52 @@
+name: Assignment Test workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Build services
+        run: docker-compose build
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Start services
+        run: docker-compose up --detach
+
+      - name: Wait for services to start
+        run: sleep 30  # sleep duration
+
+      - name: Run tests
+        run: npm test
+
+      - name: Stop and remove services containers
+        run: docker-compose down
