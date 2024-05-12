@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  target_1:
+    build: 
+      context: ./
+      dockerfile: target/Dockerfile
+    ports: 
+     - "9996:9997"
+    command: node app.js ./target
+    volumes:
+      - ./events-target_1.log:/usr/src/app/events.log
+    # Add any other configuration specific to the Target-1 service
+
+  target_2:
+    build: 
+      context: ./
+      dockerfile: target/Dockerfile
+    command: node app.js ./target
+    ports: 
+     - "9998:9997"
+    volumes:
+      - ./events-target_2.log:/usr/src/app/events.log
+    # Add any other configuration specific to the Target-1 service
+
+  splitter:
+    build:
+      context: ./
+      dockerfile: splitter/Dockerfile
+    command: node app.js ./splitter
+    ports: 
+      - "9999:9997"
+    depends_on: 
+      - target_1
+      - target_2
+    # Add any other configuration specific to the Splitter service
+
+  agent:
+    build: 
+      context: ./
+      dockerfile: agent/Dockerfile
+    command: node app.js ./agent
+    ports: 
+      - "3000:3000"
+    depends_on: 
+      - target_1
+      - target_2
+      - splitter
+    # Add any other configuration specific to the Agent service
+
+  
+
+  
