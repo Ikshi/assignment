@@ -20,7 +20,7 @@ jobs:
       - name: Set up Docker
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
 
       - name: Build services
         run: docker-compose build
@@ -37,7 +37,7 @@ jobs:
       - name: Set up Docker
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
 
       - name: Start services
         run: docker-compose up --detach
