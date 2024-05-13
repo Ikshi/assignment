@@ -4,49 +4,46 @@ services:
   target_1:
     build: 
       context: ./
-      dockerfile: target/Dockerfile
+      dockerfile: target/Dockerfile # use dockerfile found in target
     ports: 
-     - "9996:9997"
-    command: node app.js ./target
+     - "9996:9997" # binding host port to docker container host
+    command: node app.js ./target # specifying the command to execute to run the target host
     volumes:
-      - ./events-target_1.log:/usr/src/app/events.log
-    # Add any other configuration specific to the Target-1 service
+      - ./events-target_1.log:/usr/src/app/events.log # to export the events.log
 
   target_2:
     build: 
       context: ./
-      dockerfile: target/Dockerfile
-    command: node app.js ./target
+      dockerfile: target/Dockerfile # use dockerfile found in target
+    command: node app.js ./target # specifying the command to execute to run the target host
     ports: 
      - "9998:9997"
     volumes:
-      - ./events-target_2.log:/usr/src/app/events.log
-    # Add any other configuration specific to the Target-1 service
+      - ./events-target_2.log:/usr/src/app/events.log # to export the events.log
 
   splitter:
     build:
       context: ./
-      dockerfile: splitter/Dockerfile
-    command: node app.js ./splitter
+      dockerfile: splitter/Dockerfile # use dockerfile found in splitter
+    command: node app.js ./splitter # specifying the command to execute to run the splitter host
     ports: 
       - "9999:9997"
-    depends_on: 
+    depends_on: # starting splitter after both targets have started and running
       - target_1
       - target_2
-    # Add any other configuration specific to the Splitter service
 
   agent:
     build: 
       context: ./
-      dockerfile: agent/Dockerfile
-    command: node app.js ./agent
+      dockerfile: agent/Dockerfile # use dockerfile found in agent
+    command: node app.js ./agent # specifying the command to execute to run the agent host
     ports: 
       - "3000:3000"
-    depends_on: 
+    depends_on: # starting agent after both targets and splitter have started and running
       - target_1
       - target_2
       - splitter
-    # Add any other configuration specific to the Agent service
+
 
   
 
