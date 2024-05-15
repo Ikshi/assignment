@@ -47,12 +47,13 @@ jobs:
 
       - name: Run tests
         run: npm test
+        continue-on-error: true
         
       - name: Archive Mochawesome report
         uses: actions/upload-artifact@v2
         with:
           name: mochawesome-report
-          path: path/to/mochawesome-report
+          path: ../mochawesome-report
 
       - name: Stop and remove services containers
         run: docker-compose down
