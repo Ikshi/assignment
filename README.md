@@ -90,7 +90,7 @@ In the workflow named "Assignment Test Workflow", there are two jobs, build and 
 
 The action/CI will automatically be triggered whenever there is a push or pull request on the main branch but you can also trigger it manually by going to Actions on Github and selecting the workflow. Then click on Run Workflow, select the branch and click on run workflow.
 
-Please note that the CI is failing because one of the test is failing.
+Please note that one test is failing and the CI would fail but I've allowed failure.
 
-## Test Results
-You can view the test results in the CI log or open the mochawesome-reporter directory.
+## Test Results from Github Actions
+You can view the test results in the artifacts of Github Actions workflow.
