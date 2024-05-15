@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: mochawesome-report
-          path: ./assignment/mochawesome-report
+          path: ./assignment/mochawesome-report.html
 
       - name: Stop and remove services containers
         run: docker-compose down
